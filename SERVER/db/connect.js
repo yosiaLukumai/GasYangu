@@ -1,13 +1,11 @@
 const mongoose = require("mongoose")
 
 //u3ldmau9lXwZoUje
-let url = "mongodb+srv://yosialukumai:jdqoWdEeBb3kYPCe@cluster0.su3pixj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-let urls ="mongodb+srv://yosialukumai:Sv9JX3X5k3ceNfOz@cluster0.l51zdtq.mongodb.net/PLant_Monitor?retryWrites=true&w=majority"
 
 const connectDb = async () => {
     console.log("trying connecting to the database...");
     mongoose.set('strictQuery', false);
-    var connected = await mongoose.connect(url)
+    var connected = await mongoose.connect(process.env.MONGO_URL)
     if (connected) {
         console.log("sucessfully connected to db")
     } else {
@@ -19,7 +17,7 @@ const connectDb = async () => {
 
 const reconnect = async () => {
     try {
-        let connected = await mongoose.connect("mongodb+srv://yosialukumai:Z80FCTf8MF5rVRcE@cluster0.94yu98v.mongodb.net/");
+        let connected = await mongoose.connect("");
         console.log(connected);
         return connected;
     } catch (error) {
@@ -33,7 +31,7 @@ const reconnect = async () => {
 const connectDB = async () => {
     try {
         mongoose.set('strictQuery', false);
-        await mongoose.connect("mongodb+srv://yosialukumai:Z80FCTf8MF5rVRcE@cluster0.94yu98v.mongodb.net/", {
+        await mongoose.connect("", {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
