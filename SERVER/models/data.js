@@ -1,19 +1,19 @@
 const mongoose = require("mongoose")
 
 const data = mongoose.Schema({
-    userId: {
-        type: mongoose.Types.ObjectId,
+    deviceId: {
+        type: Number,
         required: true,
     },
-    temp: {
+    weight: {
         type: Number,
         required: true
     },
-    hum: {
+    ReminderValue: {
         type: Number,
         required: true
     },
-    size: {
+    GasSize: {
         type: Number,
         required: true
     }

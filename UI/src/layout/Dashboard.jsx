@@ -31,7 +31,7 @@ export const DashBoard = () => {
                     <Box py="0.7rem" px="0.7rem" mx="auto" width={{ base: '100%', sm: '80%', md: '70%' }}>
                         <Flex minWidth='max-content' alignItems='center' gap='2'>
                             <Box p='2' cursor="pointer" onClick={() => navigateTo("")}>
-                                <Heading size='lg' color="white" display="flex" gap="2"><  MdDeviceHub color="white" /> Monitor </Heading>
+                                <Heading size='lg' color="#70e000" display="flex" gap="2"><  MdDeviceHub color="white" /> G.Yangu </Heading>
                             </Box>
                             <Spacer />
                             <Icon color="white" cursor="pointer" onClick={() => navigateTo("info")} boxSize="1.5rem" as={FaInfoCircle} />

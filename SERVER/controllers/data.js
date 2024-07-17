@@ -1,26 +1,20 @@
 const dataModel = require("./../models/data");
 const userModel = require("./../models/users");
-const picModel = require("./../models/pics")
 const createOutput = require("../utils").createOutput;
-const BoxModel = require("../models/Boxs")
 const io = require("./../index")
 const serveData = async (req, res) => {
     try {
         // let { temp, hum, size, deviceId } = req.body;
-        let { temp, hum, size } = req.body;
+        let { deviceId, weight, ReminderValue, GasSize } = req.body;
         // query the device id to get userId
-        // check the type of the size of the plant
-        temp = String(temp);
-        hum = String(hum);
         size = String(size);
 
 
 
-        // const found = await userModel.findOne({ deviceId: String(deviceId) });
-        const found = await userModel.findOne({ deviceId: 1000 });
+        const found = await userModel.findOne({ deviceId: deviceId });
         if (found) {
             // save the data to the database
-            const saved = await dataModel.create({ userId: found?._id, temp, hum, size });
+            const saved = await dataModel.create({ deviceId, weight, ReminderValue, GasSize });
             if (saved) {
                 // fire a socket to notify there is new data...
                 io.Socket.emit("newData", saved)
@@ -42,7 +36,7 @@ const serveGraphData = async (req, res) => {
         const deviceId = req.params.deviceId
         const found = await userModel.findOne({ deviceId: String(deviceId) });
         if (found) {
-            const fiveLastData = await dataModel.find({ userId: found?._id }, "temp hum size createdAt", { createdAt: -1 }).limit(6).exec();
+            const fiveLastData = await dataModel.find({ userId: found?._id }, null, { createdAt: -1 }).limit(6).exec();
             
             return res.json(createOutput(true, fiveLastData))
         } else {
@@ -55,23 +49,13 @@ const serveGraphData = async (req, res) => {
 
 const fetchDataLogs = async (req, res) => {
     try {
-        let parameter = req.params.parameter
         let userId = req.params.id
         let user = await userModel.findById(userId)
         if (user) {
             // checking if the parameter is of what type
-            if (parameter == "Temperature") {
-                const data = await dataModel.find({ userId }, "temp createdAt", { sort: { createdAt: -1 } }).exec();
+        
+                const data = await dataModel.find(null, null, { sort: { createdAt: -1 } }).exec();
                 return res.json(createOutput(true, data))
-            }
-            if (parameter == "Humidity") {
-                const data = await dataModel.find({ userId }, "hum createdAt", { sort: { createdAt: -1 } }).exec();
-                return res.json(createOutput(true, data))
-            }
-            if (parameter == "size") {
-                const data = await BoxModel.find(null, "average rectangles createdAt", { sort: { createdAt: -1 } }).exec();
-                return res.json(createOutput(true, data))
-            }
         } else {
             return res.json(createOutput(true, "No such user", true));
         }
@@ -107,43 +91,10 @@ const FindLastData = async (req, res) => {
     }
 }
 
-const SaveImages = async (req, res) => {
-    try {
-
-        const deviceId = req.params.deviceId;
-        const found = await userModel.findOne({ deviceId: String(deviceId) });
-        if (found) {
-            // 
-        } else {
-            return res.json(createOutput(false, "No such device Id", true));
-        }
-
-
-    } catch (error) {
-        return res.json(createOutput(false, error.message, true));
-    }
-}
-
-const FindSizes = async (req, res) => {
-    try {
-        const deviceId = req.params.deviceId
-        const found = await userModel.findOne({ deviceId: String(deviceId) });
-        if (found) {
-            const fiveLastData = await BoxModel.find(null, "average createdAt", { createdAt: -1 }).limit(6).exec();
-            return res.json(createOutput(true, fiveLastData))
-        } else {
-            return res.json({ status: 0, message: "Device not registered..." })
-        }
-    } catch (error) {
-        return res.json(createOutput(false, error.message, true));
-    }
-}
 
 module.exports = {
     serveData,
     FindLastData,
     fetchDataLogs,
     serveGraphData,
-    SaveImages,
-    FindSizes
 }

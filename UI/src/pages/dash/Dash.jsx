@@ -15,6 +15,7 @@ import { Switch } from '@chakra-ui/react'
 import { Center, Square, Circle } from '@chakra-ui/react'
 import ToggleSwitch from "../../components/toogler"
 import GaugeChart from 'react-gauge-chart'
+import ToggleTwo from "../../components/ToggleTwo"
 // import isEqual from "lodash/isEqual";
 
 
@@ -167,35 +168,47 @@ export const Dash = () => {
         navigator(`/auth/${retriveData("PData")._id}/history/${path}`)
     }
 
-    const chartStyle = {
-        height: "250px",
-        width:"auto"
-      }
+    // const chartStyle = {
+    //     width: "100%",
+    //     height:""
+    // }
 
     return (
         <>
             <Box px="0.7rem" mx="auto">
-                <Box>
-                    <Box mx="auto"  mt="3rem" width={{ base: '100%', sm: '80%', md: '70%' }}  className="glassBGS displayCenterVerically">
+                <Box mx="auto" mt="3rem" width={{ base: '100%', sm: '90%', md: '70%' }} className="glassBGS displayCenterVerically">
+                    <Box mx="auto" width={{ base: '100%', sm: '80%', md: '60%' }}>
                         <Center>
                             <GaugeChart id="gauge-chart5"
-                                nrOfLevels={120}
+                                nrOfLevels={100}
                                 arcsLength={[0.3, 0.5, 0.2]}
                                 colors={['#5BE12C', '#F5CD19', '#EA4228']}
                                 percent={0.57}
-                                formatTextValue={(v) => v+ "C"}
+                                formatTextValue={(v) => v + "%"}
+                                needleColor="rgb(211, 34, 63)"
                                 arcPadding={0.02}
-                                // style={chartStyle} 
+                                hideText
+                            // style={chartStyle}
                             />
+
                         </Center>
-                        <Center>
-                            <ToggleSwitch />
-                        </Center>
-                        <Box pb={"1.2rem"}></Box>
+
+                        <Box py={"0rem"} style={{ fontSize: "1.9rem", color: "whitesmoke", top: "-19px", position: "relative", textAlign: "center", fontWeight: "bolder" }}>
+                            {57} %
+                        </Box>
+
+                        <Box py={"1.6rem"}>
+                            <div className="container row infoDesc">
+                                <div style={{color:"#1b4332"}} className="col s8 textFontSized">Current Weight:  </div>
+                                <div style={{ textAlign: "center" }} className="col s4 namespec textFontSized"> 12.1 kg</div>
+                            </div>
+                            <div className="container row infoDesc">
+                                <div style={{color:"#1b4332"}} className="col s8 textFontSized">Reminder %:  </div>
+                                <div style={{ textAlign: "center" }} className="col s4 namespec textFontSized"> 12%</div>
+                            </div>
+                        </Box>
                     </Box>
-
                 </Box>
-
             </Box>
         </>
     )
